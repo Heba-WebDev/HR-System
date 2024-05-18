@@ -23,7 +23,7 @@ model Employees {
   national_id   String
   department    String
   job_title     String
-  start_date    DateTime
+  start_date    DateTime @default(now())
   contract_type String
 }
 
