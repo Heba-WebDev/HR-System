@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Get } from '@nestjs/common';
+import { Controller, Post, Delete, Get, ValidationPipe } from '@nestjs/common';
 import { Employees } from '@prisma/client';
 import { Body } from '@nestjs/common';
 import { RegisterEmployee } from './create/create.dto';
@@ -15,7 +15,9 @@ export class EmployeeController {
     private readonly getService: GetAllService,
   ) {}
   @Post()
-  async create(@Body() employeeData: RegisterEmployee): Promise<Employees> {
+  async create(
+    @Body(new ValidationPipe()) employeeData: RegisterEmployee,
+  ): Promise<Employees> {
     return this.createService.createUser(employeeData);
   }
 
