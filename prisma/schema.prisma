@@ -14,32 +14,44 @@ datasource db {
 }
 
 model Employees {
-  id            String   @id @default(uuid())
-  name          String
-  phone_number  String   @unique
-  email         String   @unique
-  born_date     String
-  nationality   String
-  national_id   String
-  department    String
-  job_title     String
-  start_date    DateTime @default(now())
-  contract_type String
+  id              String      @id @default(uuid())
+  name            String
+  phone_number    String      @unique
+  email           String      @unique
+  born_date       String
+  nationality     String
+  national_id     String
+  department_name String
+  department      Departments @relation(fields: [department_name], references: [name])
+  job_title       String
+  job             Positions   @relation(fields: [job_title], references: [name])
+  status          String      @default("Working")
+  status_name     Status      @relation(fields: [status], references: [name])
+  start_date      DateTime    @default(now())
+  end_date        String?
+  contract_type   String
+  salary          Decimal
 }
 
-// model Departments {
-//   id  Int @default(autoincrement()) @id
-//   name  String  @unique
-//   head  String
-// }
+model Status {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  employees Employees[]
+}
 
-// model Positions {
-//   id  Int @default(autoincrement()) @id
-//   department_id  Int
-//   name  String
-// }
+model Departments {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  employees Employees[]
+}
 
-// model Contracts {
-//   id  Int @default(autoincrement()) @id
-//   type String @unique
-// }
+model Positions {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  employees Employees[]
+}
+
+model Contracts {
+  id   Int    @id @default(autoincrement())
+  type String @unique
+}
